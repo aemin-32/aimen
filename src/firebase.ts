@@ -1,22 +1,21 @@
-// src/firebase.ts
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-// مفاتيح الربط الخاصة بمشروعك
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyANv4kf7cjoLdTGGZqkI3DX0TVMyi6j2_A",
-  authDomain: "life-os-6c01f.firebaseapp.com",
-  projectId: "life-os-6c01f",
-  storageBucket: "life-os-6c01f.firebasestorage.app",
-  messagingSenderId: "870895248318",
-  appId: "1:870895248318:web:0de4b80a0cf8663b564fef",
-  measurementId: "G-W7RN5B5WZP"
+  apiKey: "AIzaSyC0c3B26bYXRbivPteHUOWdesQl1x44BQI",
+  authDomain: "aimen-eec8a.firebaseapp.com",
+  projectId: "aimen-eec8a",
+  storageBucket: "aimen-eec8a.firebasestorage.app",
+  messagingSenderId: "10081341285",
+  appId: "1:10081341285:web:33050f0340584a75a2db8c",
+  measurementId: "G-8DR4K0WSMM"
 };
 
-// تشغيل Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// تصدير أدوات تسجيل الدخول وقاعدة البيانات حتى نستخدمها بباقي النظام
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+const analytics = getAnalytics(app);
