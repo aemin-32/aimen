@@ -1,13 +1,11 @@
-// Import the functions you need from the SDKs you need
+// استيراد الدوال المطلوبة
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// إعدادات مشروعك
 const firebaseConfig = {
-  apiKey: "AIzaSyC0c3B26bYXRbivPteHUOWdesQl1x44BQI",
+  apiKey: "AIzaSyC0c3B26bYXRbivPteHUOWdesQ1lx44BQI",
   authDomain: "aimen-eec8a.firebaseapp.com",
   projectId: "aimen-eec8a",
   storageBucket: "aimen-eec8a.firebasestorage.app",
@@ -16,6 +14,21 @@ const firebaseConfig = {
   measurementId: "G-8DR4K0WSMM"
 };
 
-// Initialize Firebase
+// تهيئة Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+export const analytics = getAnalytics(app);
+
+// تهيئة المصادقة
+export const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// دالة تسجيل الدخول بحساب كوكل
+export const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    console.log("تم تسجيل الدخول:", result.user.displayName);
+    return result.user;
+  } catch (error) {
+    console.error("حدث خطأ أثناء تسجيل الدخول:", error);
+  }
+};
