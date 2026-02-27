@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
 
     // Use the repo name as base only for production build (GitHub Pages)
     // For development (local preview), use root '/'
-    base: mode === 'production' ? './' : '/',
+  base: mode === 'production' ? '/aimen/' : '/',
     plugins: [react()],
     define: {
       // Expose API_KEY to the client-side code as process.env.API_KEY
