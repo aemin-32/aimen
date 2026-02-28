@@ -1,9 +1,8 @@
-// استيراد الدوال المطلوبة
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getFirestore } from "firebase/firestore"; // ضروري للـ usePersistence
 
-// إعدادات مشروعك
 const firebaseConfig = {
   apiKey: "AIzaSyC0c3B26bYXRbivPteHUOWdesQ1lx44BQI",
   authDomain: "aimen-eec8a.firebaseapp.com",
@@ -14,15 +13,15 @@ const firebaseConfig = {
   measurementId: "G-8DR4K0WSMM"
 };
 
-// تهيئة Firebase
 const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);
 
-// تهيئة المصادقة
 export const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// دالة تسجيل الدخول بحساب كوكل
+// تصدير قاعدة البيانات لحل مشكلة الـ Build
+export const db = getFirestore(app); 
+
 export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
