@@ -1,10 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { getFirestore } from "firebase/firestore"; // ضروري للـ usePersistence
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC0c3B26bYXRbivPteHUOWdesQ1lx44BQI",
+  // تم تصحيح المفتاح هنا (Ql1x)
+  apiKey: "AIzaSyC0c3B26bYXRbivPteHUOWdesQl1x44BQI", 
   authDomain: "aimen-eec8a.firebaseapp.com",
   projectId: "aimen-eec8a",
   storageBucket: "aimen-eec8a.firebasestorage.app",
@@ -18,9 +19,7 @@ export const analytics = getAnalytics(app);
 
 export const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-
-// تصدير قاعدة البيانات لحل مشكلة الـ Build
-export const db = getFirestore(app); 
+export const db = getFirestore(app);
 
 export const signInWithGoogle = async () => {
   try {
