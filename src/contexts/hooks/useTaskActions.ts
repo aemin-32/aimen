@@ -3,6 +3,8 @@ import { Task, TaskCategory, Law } from '../../types/taskTypes';
 import { Difficulty, Stat, LootPayload } from '../../types/types';
 import { useLifeOS } from '../LifeOSContext';
 import { useSkills } from '../SkillContext';
+import { useHabits } from '../HabitContext';
+import { useRaids } from '../RaidContext';
 import { playSound } from '../../utils/audio';
 import { calculateTaskReward } from '../../utils/economyEngine';
 import { calculateMonthlyAverage, calculateDailyHonorPenalty } from '../../utils/honorSystem';
@@ -16,6 +18,8 @@ export const useTaskActions = (
 ) => {
     const { state: lifeState, dispatch: lifeDispatch } = useLifeOS();
     const { skillDispatch, skillState } = useSkills();
+    const { habitState } = useHabits();
+    const { raidState } = useRaids();
 
     const addTask = (taskData: Omit<Task, 'id' | 'isCompleted'>) => {
         let { cleanedTitle, timeCode } = parseTimeCode(taskData.title);
@@ -190,7 +194,12 @@ export const useTaskActions = (
 
         if (!task.isCompleted && !task.isArchived) {
              const penalty = PENALTIES[task.difficulty];
-             const penaltyPercent = calculateDailyHonorPenalty(task.difficulty);
+             const penaltyPercent = calculateDailyHonorPenalty(
+                task.difficulty, 
+                state.tasks, 
+                habitState.habits, 
+                raidState.raids
+             );
              const todayIso = lifeState.ui.debugDate ? new Date(lifeState.ui.debugDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
              const currentDailyHonor = lifeState.user.honorDailyLog[todayIso] !== undefined ? lifeState.user.honorDailyLog[todayIso] : 100;
              const newDailyHonor = Math.max(0, currentDailyHonor - penaltyPercent); 
@@ -309,6 +318,7 @@ export const useTaskActions = (
         }
 
         setState(prev => ({ ...prev, laws: prev.laws.map(l => l.id === id ? { ...l, timesBroken: l.timesBroken + 1 } : l) }));
+        lifeDispatch.updateUser({ metrics: { ...lifeState.user.metrics, lawsBroken: lifeState.user.metrics.lawsBroken + 1 } });
         playSound('error', soundEnabled);
         lifeDispatch.addToast(`Law Broken: ${law.title}`, 'error');
     };

@@ -44,8 +44,11 @@ export const INITIAL_STATE: LifeOSState = {
         totalXPEarned: 0, 
         highestStreak: 0,
         habitsFixed: 0,
+        habitsByDifficulty: { [Difficulty.EASY]: 0, [Difficulty.NORMAL]: 0, [Difficulty.HARD]: 0 }, // 👈 NEW
         shieldsUsed: 0,
-        resetsCount: 0
+        resetsCount: 0,
+        lawsBroken: 0, // 👈 NEW
+        campaignsCompleted: 0 // 👈 NEW
     },
     // 🎨 Use Imported Themes
     unlockedThemes: DEFAULT_THEMES,

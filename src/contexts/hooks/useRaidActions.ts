@@ -6,6 +6,7 @@ import { useSkills } from '../SkillContext';
 import { playSound } from '../../utils/audio';
 import { calculateTaskReward } from '../../utils/economyEngine';
 import { parseTimeCode, getActiveCampaignData, calculateCampaignDate } from '../../utils/campaignEngine';
+import { executeRaidDeletion } from '../../utils/raidEngine';
 
 export const useRaidActions = (
     state: { raids: Raid[] },
@@ -77,9 +78,10 @@ export const useRaidActions = (
     };
 
     const deleteRaid = (raidId: string) => {
-        setState(prev => ({ ...prev, raids: prev.raids.filter(r => r.id !== raidId) }));
-        playSound('delete', soundEnabled);
-        lifeDispatch.addToast('Operation Deleted', 'info');
+        setState(prev => ({ 
+            ...prev, 
+            raids: executeRaidDeletion(prev.raids, raidId, soundEnabled, lifeDispatch.addToast) 
+        }));
     };
 
     const archiveRaid = (raidId: string) => {
@@ -250,7 +252,22 @@ export const useRaidActions = (
             if (isRaidComplete) {
                 playSound('crit', soundEnabled);
                 lootPayload = { title: `Operation Conquered: ${raid.title}`, xp: xp * 5, gold: gold * 5, multiplier: 5, message: "Sector Secured. Tactical Superiority Achieved." };
-                lifeDispatch.updateUser({ currentXP: lifeState.user.currentXP + (xp * 5), gold: lifeState.user.gold + (gold * 5), metrics: { ...lifeState.user.metrics, totalRaidsWon: lifeState.user.metrics.totalRaidsWon + 1 } });
+                
+                const newMetrics = { 
+                    ...lifeState.user.metrics, 
+                    totalRaidsWon: lifeState.user.metrics.totalRaidsWon + 1,
+                    raidsByDifficulty: {
+                        ...lifeState.user.metrics.raidsByDifficulty,
+                        [raid.difficulty]: (lifeState.user.metrics.raidsByDifficulty[raid.difficulty] || 0) + 1
+                    },
+                    campaignsCompleted: raid.isCampaign ? lifeState.user.metrics.campaignsCompleted + 1 : lifeState.user.metrics.campaignsCompleted
+                };
+
+                lifeDispatch.updateUser({ 
+                    currentXP: lifeState.user.currentXP + (xp * 5), 
+                    gold: lifeState.user.gold + (gold * 5), 
+                    metrics: newMetrics 
+                });
             } else {
                 playSound('success', soundEnabled);
                 lifeDispatch.addToast(`Step Secured | +${xp} XP`, 'success');

@@ -9,13 +9,13 @@ import { checkHabitActive } from './habitEngine';
 type HonorMaterial = 'Wood' | 'Copper' | 'Iron' | 'Silver' | 'Gold' | 'Diamond' | 'Crimson';
 
 export const HONOR_QUOTES: Record<HonorMaterial, string> = {
-    "Wood": "هش وسريع الكسر. تحتاج إلى تقوية جذورك.", // 0-39%
-    "Copper": "بداية التوصيل، لكن المعدن رخيص.", // 40-59%
-    "Iron": "صلب، يتحمل الصدمات، لكنه يصدأ بلا عناية.", // 60-69%
-    "Silver": "نقي ولامع. بدأت ترتقي عن المعادن الدنيئة.", // 70-79%
-    "Gold": "المعيار الذي يُقاس به الآخرون. قيمة ثابتة.", // 80-89%
-    "Diamond": "غير قابل للخدش. ضغط هائل صنع جوهرة.", // 90-98%
-    "Crimson": "أسطورة حية. الشرف يجري في عروقك كالدم.", // 99-100%
+    "Wood": "Fragile and easily broken. You need to strengthen your roots.", // 0-39%
+    "Copper": "A start to conductivity, but the metal is cheap.", // 40-59%
+    "Iron": "Solid, withstands shocks, but rusts without care.", // 60-69%
+    "Silver": "Pure and shiny. You're starting to rise above base metals.", // 70-79%
+    "Gold": "The standard by which others are measured. A constant value.", // 80-89%
+    "Diamond": "Unscratchable. Immense pressure created a jewel.", // 90-98%
+    "Crimson": "A living legend. Honor flows in your veins like blood.", // 99-100%
 };
 
 // ⚖️ DIFFICULTY WEIGHTS
@@ -127,16 +127,22 @@ export const getDailyHonorBreakdown = (
 };
 
 /**
- * 🧮 CALCULATE TOTAL DAILY LOAD (Legacy Wrapper)
- * Retained for backward compatibility with existing calls.
+ * 🧮 CALCULATE TOTAL DAILY LOAD
+ * Calculates the penalty percentage for failing an item today.
  */
-export const calculateDailyHonorPenalty = (itemDifficulty: Difficulty): number => {
+export const calculateDailyHonorPenalty = (
+    itemDifficulty: Difficulty,
+    tasks?: any[],
+    habits?: any[],
+    raids?: any[]
+): number => {
     try {
-        const tasks = JSON.parse(localStorage.getItem('LIFE_OS_TASKS_DATA') || '[]');
-        const habits = JSON.parse(localStorage.getItem('LIFE_OS_HABITS_DATA') || '[]');
-        const raids = JSON.parse(localStorage.getItem('LIFE_OS_RAIDS_DATA') || '[]');
+        // 🟢 Fallback to localStorage if data not provided (for HabitContext which is outside Task/Raid providers)
+        const finalTasks = tasks || JSON.parse(localStorage.getItem('LIFE_OS_TASKS_DATA') || '{"tasks":[]}').tasks;
+        const finalHabits = habits || JSON.parse(localStorage.getItem('LIFE_OS_HABITS_COMBINED') || '{"habits":[]}').habits;
+        const finalRaids = raids || JSON.parse(localStorage.getItem('LIFE_OS_RAIDS_DATA') || '{"raids":[]}').raids;
 
-        const { totalWeight } = getDailyHonorBreakdown(tasks, habits, raids);
+        const { totalWeight } = getDailyHonorBreakdown(finalTasks, finalHabits, finalRaids);
         
         const itemWeight = WEIGHTS[itemDifficulty] || 1;
         const totalLoad = Math.max(itemWeight, totalWeight); 

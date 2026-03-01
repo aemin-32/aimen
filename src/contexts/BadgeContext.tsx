@@ -98,6 +98,11 @@ export const BadgeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
                     currentValue = targetRaid.progress;
                 }
             }
+            // 🧠 SKILL COUNT LOGIC (NEW)
+            else if (badge.triggerType === 'skill_count' && badge.metricKey) {
+                const threshold = parseInt(badge.metricKey);
+                currentValue = skillState.skills.filter(s => s.level >= threshold).length;
+            }
 
             // 2. Check Levels
             badge.levels.forEach(level => {

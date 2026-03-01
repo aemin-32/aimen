@@ -37,7 +37,7 @@ export interface BadgeDefinition {
     
     // Logic Mapping
     // 🟢 Added 'raid' to trigger specific raid checks
-    triggerType: 'stat' | 'metric' | 'manual' | 'skill' | 'habit' | 'raid'; 
+    triggerType: 'stat' | 'metric' | 'manual' | 'skill' | 'habit' | 'raid' | 'skill_count'; 
     metricKey?: string; // e.g., 'totalTasksCompleted' or 'stats.STR' or 'Habit Title'
     
     levels: BadgeLevelDefinition[];

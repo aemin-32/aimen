@@ -21,21 +21,21 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       {/* ترتيب المزودات مهم: LifeOS هو الأساس */}
       <LifeOSProvider>
         <SkillProvider>
-          <TaskProvider>
-            <HabitProvider>
-              <RaidProvider>
+          <HabitProvider>
+            <RaidProvider>
+              <TaskProvider>
                 <ShopProvider>
                   <CampaignProvider>
                     <BadgeProvider>
-                      <CalendarProvider> {/* 👈 WRAP */}
+                      <CalendarProvider>
                         <App />
                       </CalendarProvider>
                     </BadgeProvider>
                   </CampaignProvider>
                 </ShopProvider>
-              </RaidProvider>
-            </HabitProvider>
-          </TaskProvider>
+              </TaskProvider>
+            </RaidProvider>
+          </HabitProvider>
         </SkillProvider>
       </LifeOSProvider>
     </ErrorBoundary>

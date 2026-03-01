@@ -113,7 +113,14 @@ export const useHabitActions = (
                 dailyXP: lifeState.user.dailyXP + rewards.xp,
                 gold: lifeState.user.gold + rewards.gold,
                 stats: newStats,
-                metrics: { ...lifeState.user.metrics, habitsFixed: lifeState.user.metrics.habitsFixed + 1 }
+                metrics: { 
+                    ...lifeState.user.metrics, 
+                    habitsFixed: lifeState.user.metrics.habitsFixed + 1,
+                    habitsByDifficulty: {
+                        ...lifeState.user.metrics.habitsByDifficulty,
+                        [habit.difficulty]: (lifeState.user.metrics.habitsByDifficulty[habit.difficulty] || 0) + 1
+                    }
+                }
             });
 
             if (habit.skillId) skillDispatch.addSkillXP(habit.skillId, Math.ceil(rewards.xp * 0.5));

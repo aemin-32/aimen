@@ -42,8 +42,8 @@ const INITIAL_SKILLS: Skill[] = [
     },
     {
         id: 'sk_02',
-        title: 'كارزمه',
-        description: 'دمج بين المهارات الاجتماعية، الذكاء، والصحة.',
+        title: 'Charisma',
+        description: 'A blend of social skills, intelligence, and health.',
         relatedStats: [Stat.REL, Stat.INT, Stat.HEA],
         level: 1,
         currentXP: 0,

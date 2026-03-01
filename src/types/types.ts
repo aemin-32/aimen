@@ -60,8 +60,11 @@ export interface UserMetrics {
     totalXPEarned: number;
     highestStreak: number;
     habitsFixed: number; 
+    habitsByDifficulty: { [key in Difficulty]: number }; // 👈 NEW
     shieldsUsed: number;
     resetsCount: number; 
+    lawsBroken: number; // 👈 NEW
+    campaignsCompleted: number; // 👈 NEW
 }
 
 // 🏛️ MODULE 05: USER PROFILE
